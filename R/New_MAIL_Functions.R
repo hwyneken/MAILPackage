@@ -24,11 +24,16 @@ MAIL = function(XMat,yVec,splitOption,
                 smallestModelWeightType,
                 firstSOILPsi,
                 smallestModelPsi,
-                sigma2EstFunc,trueSD=NULL,set.seed=7788) {
+                sigma2EstFunc,trueSD=NULL,set.seed=7788,
+                verbose=TRUE) {
   # 1) select variables: high vs low value on the right dataset
   # 2) calculate weights
   # 3) construct a candidate matrix
   #browser()
+  
+  if (verbose==TRUE) {
+    print("Step 1: Organize Data")
+  }
   
   N = dim(XMat)[1]
   p = dim(XMat)[2]
@@ -62,6 +67,10 @@ MAIL = function(XMat,yVec,splitOption,
     pCon = dim(xCon)[2]       
   }
   
+  if (verbose == TRUE) {
+    print("Step 2: Run First Model Average")
+  }
+  
   if (firstSOILWeightType != "ARM") {
     soilRes = SOIL(x=XMat,y=yVec,
                    weight_type=firstSOILWeightType,
@@ -74,6 +83,9 @@ MAIL = function(XMat,yVec,splitOption,
                    n_train = ceiling(NExp/2)+4)
   }
   
+  if (verbose == TRUE) {
+    print("Step 3: Select Variables for the Nested Candidate Set")
+  }
   
   allSOILScores = as.numeric(soilRes$importance)
   numModels = min(c(floor(dim(xExp)[1]/2),floor(dim(xExp)[2]/2)))
@@ -89,7 +101,12 @@ MAIL = function(XMat,yVec,splitOption,
   selectedSOILScores = as.numeric(soilRes$importance)[selectedSet]
   selectedSetSorted = selectedSet[order(selectedSOILScores,decreasing=TRUE)]
   
+  
   ### create the candidate matrix
+  if (verbose == TRUE) {
+    print("Step 4: Create Candidate Set, and Smallest Model")
+  }
+  
   candMat = matrix(0,nrow=numSelected,ncol=p)
   tempVarSet = c()
   for (i in 1:numSelected) {
@@ -104,6 +121,10 @@ MAIL = function(XMat,yVec,splitOption,
   
   minInd = which.max(reRunSOIL_SmallestModel$weight)
   maxInd = dim(candMat)[1] 
+  
+  if (verbose == TRUE) {
+    print("Step 5: Estimate sigma^2")
+  }
   
   ##### Variance Estimation
   if (sigma2EstFunc != "trueValue") {
@@ -120,7 +141,9 @@ MAIL = function(XMat,yVec,splitOption,
   ### in other words choose min AIC-corrected as the cutoff
   
   
-  
+  if (verbose == TRUE) {
+    print("Step 6: Estimate Final Weights")
+  }
   
   origSelectedSet = selectedSet
   
@@ -142,6 +165,11 @@ MAIL = function(XMat,yVec,splitOption,
     }
     modelWeight = finalSOIL$weight    
   }
+  
+  if (verbose == TRUE) {
+    print("Step 7: Get MAIL Estimates and CI's")
+  }
+  
   numCand = dim(candMat)[1]
   selectedSet = which(candMat[numCand,] != 0)
   numModels = numCand
