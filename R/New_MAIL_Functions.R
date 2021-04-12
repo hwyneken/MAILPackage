@@ -177,6 +177,21 @@ MAIL = function(XMat,yVec,splitOption,
   
   tempCoefVec = rep(0,numSelected)
   tempVarVec = rep(0,numSelected)
+  tempVarVec_Alt <- rep(0,numSelected)
+  
+  ### need to speed this up
+  covMatList <- list() # list of information matrices for each submodel
+  for (i in 1:numCand) {
+    tempX <- xCon[,which(candMat[i,] != 0)]
+    if (sum(candMat[i,] != 0) == 1) {
+      tempX <- matrix(tempX,ncol=1)
+    }
+    colnames(tempX) = paste("V",which(candMat[i,] != 0),sep="")
+    tempDF = data.frame(y=yCon)
+    tempDF = cbind(tempDF,tempX)
+    tempM = lm(y~.,data=tempDF)
+    covMatList[[i]] <- summary(tempM)$cov.unscaled
+  }
   
   
   for (i in 1:numSelected) {
@@ -186,8 +201,9 @@ MAIL = function(XMat,yVec,splitOption,
     tempModelWeight = modelWeight[tempModelInds] / sum(modelWeight[tempModelInds])
     numTempInds = length(tempModelInds)
     
-    tempCoefVec2 = rep(0,times=numTempInds)
-    tempVarVec2 = rep(0,times=numTempInds)
+    tempCoefVec2 <- rep(0,times=numTempInds)
+    tempVarVec2 <- rep(0,times=numTempInds)
+    tempVarVec2_Alt <- rep(0,times=numTempInds)
     for (j in 1:numTempInds) {
       tempInd = tempModelInds[j]
       
@@ -206,13 +222,18 @@ MAIL = function(XMat,yVec,splitOption,
                            tempModelWeight[j]^2,
                            tempModelWeight[j]^2 + 2*tempModelWeight[j]*sum(tempModelWeight[(j+1):numTempInds]))
       tempVarVec2[j] = tempWeight2 * diag(summary(tempM)$cov.unscaled)[paste("V",tempVar,sep="")]
+      
+      tempCovMat <- covMatList[[tempInd]]
+      tempVarVec2_Alt[j] <- tempWeight2 * tempCovMat[paste("V",tempVar,sep="")]
     }
     
     tempCoefVec[i] = sum(tempCoefVec2)
     tempVarVec[i] = sum(tempVarVec2)
+    tempVarVec_Alt[i] = sum(tempVarVec2_Alt)
   }
   
   tempVarVec = tempVarVec *  estSigma2 
+  tempVarVec_Alt <- tempVarVec_Alt * estSigma2
   
   tempCI = matrix(0,nrow=numSelected,ncol=2)
   tempCI[,1] = tempCoefVec - 1.96*sqrt(tempVarVec)
@@ -225,6 +246,7 @@ MAIL = function(XMat,yVec,splitOption,
   resList = list(tempCI = tempCI,
                  selectedSet = selectedSet,
                  margVar = tempVarVec,
+                 margVar_Alt = tempVarVec_Alt
                  betaHat = betaHatMA,
                  modelWeight = modelWeight,
                  estSigma2 = estSigma2,
