@@ -246,7 +246,7 @@ MAIL = function(XMat,yVec,splitOption,
   resList = list(tempCI = tempCI,
                  selectedSet = selectedSet,
                  margVar = tempVarVec,
-                 margVar_Alt = tempVarVec_Alt
+                 margVar_Alt = tempVarVec_Alt,
                  betaHat = betaHatMA,
                  modelWeight = modelWeight,
                  estSigma2 = estSigma2,
