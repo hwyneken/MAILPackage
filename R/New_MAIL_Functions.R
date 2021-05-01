@@ -25,7 +25,7 @@ MAIL = function(XMat,yVec,splitOption,
                 firstSOILPsi,
                 smallestModelPsi,
                 sigma2EstFunc,trueSD=NULL,set.seed=7788,
-                verbose=TRUE) {
+                verbose=FALSE) {
   # 1) select variables: high vs low value on the right dataset
   # 2) calculate weights
   # 3) construct a candidate matrix
