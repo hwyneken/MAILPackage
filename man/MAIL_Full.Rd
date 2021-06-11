@@ -21,8 +21,12 @@ resList a list
 This is a specific use of the \code{\link{MAIL}} function. 
 The function uses the following arguments with MAIL: 
 \itemize{
-  \item{splitOption}{"Full"}
-  \item{firstSOILWeightType}{"BIC"}
-  \item{"smallestModelWeightType"}{"AIC"}
+  \item splitOption = "Full"
+  \item firstSOILWeightType = "BIC"
+  \item smallestModelWeightType = "AIC"
+  \item firstSOILPsi = 0.5
+  \item smallestModelPsi = 0
+  sigma2EstFunc = "LPM_AIC_CV_50Split"
+  verbose = FALSE
 }
 }

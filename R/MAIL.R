@@ -1,15 +1,29 @@
-MAIL = function(XMat,yVec,splitOption,
+#' MAIL
+#' 
+#' \code{MAIL} runs the Model-Averaged Inferential Learning method under different parameter settings
+#' 
+#' The most important choice is whether or not use data splitting. 
+#' The advantage of data splitting is to mitigate post selection changes to inference.
+#' The advantage of using all of the data is to reduce bias.
+#' There are six total parameters:
+#' \itemize{
+#'   \item splitOption \in \{"Full","Split"\}
+#' }
+
+
+MAIL = function(XMat,yVec,
+                splitOption,
                 firstSOILWeightType,
                 smallestModelWeightType,
                 firstSOILPsi,
                 smallestModelPsi,
-                sigma2EstFunc,trueSD=NULL,set.seed=7788,
+                sigma2EstFunc,
+                trueSD=NULL,
                 verbose=FALSE) {
   # 1) select variables: high vs low value on the right dataset
   # 2) calculate weights
   # 3) construct a candidate matrix
-  #browser()
-  
+
   if (verbose==TRUE) {
     print("Step 1: Organize Data")
   }
@@ -72,7 +86,6 @@ MAIL = function(XMat,yVec,splitOption,
   selectedSet = which(as.numeric(soilRes$importance) >= soilCutoff)
   
   if (length(selectedSet) > numModels) {
-    #browser()
     selectedSet = selectedSet[order(allSOILScores[selectedSet],decreasing=TRUE)[1:numModels]]
   }
   numSelected = length(selectedSet)
