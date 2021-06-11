@@ -1,4 +1,29 @@
 #' Recommended method for estimating the error variance
+#' 
+#' \code{LPM_AIC_CV_50Split} estimates the error variance with the test set RMSE across 1000 data splits
+#' 
+#' @param XMat a n by p numeric matrix
+#' @param yVec a n by 1 numeric vector
+#' 
+#' The best way to understand how the function is to break apart the name.
+#' 
+#' LPM = Largest Plausible Model
+#' AIC: we choose the largest plausible model by minimizing AIC
+#' CV: we find the LPM on the training set, and get RMSE from the test set
+#' 50Split: we use a 50/50 split for the training/test set.
+#' 
+#' This is very similar to the refitted cross validation method from \insertCite{fan2012variance}{Rdpack}
+#' 
+#' @importFrom Rdpack reprompt
+#' 
+#' 
+#' @references 
+#' \insertRef{Rpack:bibtex}{Rdpack}
+#' 
+#' \insertRef{R}{bibtex}
+
+# help with references here:
+# https://cran.r-project.org/web/packages/Rdpack/vignettes/Inserting_bibtex_references.pdf
 
 LPM_AIC_CV_50Split = function(XMat,yVec) {
   N = dim(XMat)[1]

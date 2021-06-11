@@ -6,6 +6,25 @@
 \usage{
 LPM_AIC_CV_50Split(XMat, yVec)
 }
+\arguments{
+\item{XMat}{a n by p numeric matrix}
+
+\item{yVec}{a n by 1 numeric vector
+
+The best way to understand how the function is to break apart the name.
+
+LPM = Largest Plausible Model
+AIC: we choose the largest plausible model by minimizing AIC
+CV: we find the LPM on the training set, and get RMSE from the test set
+50Split: we use a 50/50 split for the training/test set.
+
+This is very similar to the refitted cross validation method from \insertCite{fan2012variance}{Rdpack}}
+}
 \description{
-Recommended method for estimating the error variance
+\code{LPM_AIC_CV_50Split} estimates the error variance with the test set RMSE across 1000 data splits
+}
+\references{
+\insertRef{Rpack:bibtex}{Rdpack}
+
+\insertRef{R}{bibtex}
 }

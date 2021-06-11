@@ -7,9 +7,9 @@
 MAIL_Split(XMat, yVec)
 }
 \arguments{
-\item{XMat}{a matrix}
+\item{XMat}{a n by p numeric matrix}
 
-\item{yVec}{a vector}
+\item{yVec}{an n by 1 numeric vector}
 }
 \value{
 resList a list

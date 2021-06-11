@@ -17,16 +17,33 @@ MAIL(
   verbose = FALSE
 )
 }
+\arguments{
+\item{XMat}{a n by p numeric matrix}
+
+\item{yVec}{a n by 1 numeric vector}
+
+\item{splitOption}{Mandatory - can take the values "Full" or "Split"}
+
+\item{smallestModelWeightType}{Mandatory - can take values "AIC", "BIC" or "ARM"}
+
+\item{firstSOILPsi}{Mandatory - can take any value in [0,1]}
+
+\item{smallestModelPsi}{Mandatory - can take any value in [0,1]}
+
+\item{sigma2EstFunc}{Mandatory - this is a string of the function that will estimate the error variance using only XMat and yVec. We recommend using "LPM_AIC_CV_50Split". If the error variance is known, use "trueValue" here.}
+
+\item{trueSD}{Optional unless "trueValue" has given to the previous argument. This is where the user gives the assumed error standard deviation.}
+
+\item{verbose}{Optional: default is FALSE - set to TRUE if you want to see printed messages about MAIL's progress.}
+
+\item{firstSOILWeightype}{Mandatory - can take values "AIC", "BIC" or "ARM"}
+}
 \description{
 \code{MAIL} runs the Model-Averaged Inferential Learning method under different parameter settings
 }
 \details{
-\loadmathjax
 The most important choice is whether or not use data splitting. 
 The advantage of data splitting is to mitigate post selection changes to inference.
 The advantage of using all of the data is to reduce bias.
-There are six total parameters:
-\itemize{
-  \item splitOption \mjdeqn{\in \{"Full","Split"\}}{ASCII representation}
-}
+There are ten total parameters:
 }

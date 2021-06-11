@@ -13,8 +13,8 @@
 #'   sigma2EstFunc = "LPM_AIC_CV_50Split"
 #'   verbose = FALSE
 #' }
-#' @param XMat a matrix
-#' @param yVec a vector
+#' @param XMat a n by p numeric matrix
+#' @param yVec an n by 1 numeric vector
 #' @return resList a list 
 
 MAIL_Split = function(XMat,yVec) {
