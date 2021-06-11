@@ -6,6 +6,8 @@
 
 
 MAIL_Full = function(XMat,yVec) {
+  #' type something here
+
   res = MAIL(XMat,yVec,"Full",
              firstSOILWeightType = "BIC",
              smallestModelWeightType = "AIC",
