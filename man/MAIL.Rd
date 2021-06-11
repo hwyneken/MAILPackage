@@ -34,10 +34,7 @@ MAIL(
 
 \item{trueSD}{Optional unless "trueValue" has given to the previous argument. This is where the user gives the assumed error standard deviation.}
 
-\item{verbose}{Optional: default is FALSE - set to TRUE if you want to see printed messages about MAIL's progress.
-
-For specific versions see @seealso \code{\link{MAIL_Full}} and \code{\link{MAIL_Split}}.
-For the recommended variance estimation method @seealso \code{\link{LPM_AIC_CV_50Split}}}
+\item{verbose}{Optional: default is FALSE - set to TRUE if you want to see printed messages about MAIL's progress.}
 
 \item{firstSOILWeighType}{Mandatory - can take values "AIC", "BIC" or "ARM"}
 }
@@ -48,4 +45,9 @@ For the recommended variance estimation method @seealso \code{\link{LPM_AIC_CV_5
 The most important choice is whether or not use data splitting. 
 The advantage of data splitting is to mitigate post selection changes to inference.
 The advantage of using all of the data is to reduce bias.
+}
+\seealso{
+\code{\link{MAIL_Full}} and \code{\link{MAIL_Split}} for specific versions
+
+\code{\link{LPM_AIC_CV_50Split}} for the recommended variance estimation method
 }

@@ -17,8 +17,8 @@
 #' @param trueSD Optional unless "trueValue" has given to the previous argument. This is where the user gives the assumed error standard deviation.
 #' @param verbose Optional: default is FALSE - set to TRUE if you want to see printed messages about MAIL's progress.
 #' 
-#' For specific versions see @seealso \code{\link{MAIL_Full}} and \code{\link{MAIL_Split}}.
-#' For the recommended variance estimation method @seealso \code{\link{LPM_AIC_CV_50Split}}
+#' @seealso \code{\link{MAIL_Full}} and \code{\link{MAIL_Split}} for specific versions 
+#' @seealso \code{\link{LPM_AIC_CV_50Split}} for the recommended variance estimation method
 
 
 MAIL = function(XMat,yVec,
