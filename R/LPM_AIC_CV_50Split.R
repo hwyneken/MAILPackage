@@ -12,7 +12,7 @@
 #' CV: we find the LPM on the training set, and get RMSE from the test set
 #' 50Split: we use a 50/50 split for the training/test set.
 #' 
-#' This is very similar to the refitted cross validation method from \insertCite{fan2012variance}{Rdpack}
+#' This is very similar to the refitted cross validation method from \insertCite{fan2012variance}{MAIL}
 #' 
 #' @importFrom Rdpack reprompt
 #' 
