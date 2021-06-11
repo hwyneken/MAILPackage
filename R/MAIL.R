@@ -5,7 +5,7 @@
 #' The most important choice is whether or not use data splitting. 
 #' The advantage of data splitting is to mitigate post selection changes to inference.
 #' The advantage of using all of the data is to reduce bias.
-#' There are ten total parameters:
+#' 
 #' @param XMat a n by p numeric matrix
 #' @param yVec a n by 1 numeric vector
 #' @param splitOption Mandatory - can take the values "Full" or "Split"
