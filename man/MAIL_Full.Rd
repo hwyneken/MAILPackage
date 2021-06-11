@@ -23,5 +23,6 @@ The function uses the following arguments with MAIL:
 \itemize{
   \item{splitOption}{"Full"}
   \item{firstSOILWeightType}{"BIC"}
+  \item{"smallestModelWeightType"}{"AIC"}
 }
 }

@@ -7,6 +7,7 @@
 #' \itemize{
 #'   \item{splitOption}{"Full"}
 #'   \item{firstSOILWeightType}{"BIC"}
+#'   \item{"smallestModelWeightType"}{"AIC"}
 #' }
 #' @param XMat a matrix
 #' @param yVec a vector
