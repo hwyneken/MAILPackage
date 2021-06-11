@@ -9,7 +9,7 @@ MAIL_Full(XMat, yVec)
 \arguments{
 \item{XMat}{a n by p numeric matrix}
 
-\item{yVec}{an n by 1 numeric vector}
+\item{yVec}{a n by 1 numeric vector}
 }
 \value{
 resList a list

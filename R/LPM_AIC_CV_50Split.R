@@ -18,9 +18,7 @@
 #' 
 #' 
 #' @references 
-#' \insertRef{Rpack:bibtex}{Rdpack}
-#' 
-#' \insertRef{R}{bibtex}
+#' \insertRef{fan2012variance}
 
 # help with references here:
 # https://cran.r-project.org/web/packages/Rdpack/vignettes/Inserting_bibtex_references.pdf

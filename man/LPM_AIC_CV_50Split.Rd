@@ -24,7 +24,5 @@ This is very similar to the refitted cross validation method from \insertCite{fa
 \code{LPM_AIC_CV_50Split} estimates the error variance with the test set RMSE across 1000 data splits
 }
 \references{
-\insertRef{Rpack:bibtex}{Rdpack}
-
-\insertRef{R}{bibtex}
+\insertRef{fan2012variance}
 }

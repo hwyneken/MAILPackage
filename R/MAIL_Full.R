@@ -14,7 +14,7 @@
 #'   verbose = FALSE
 #' }
 #' @param XMat a n by p numeric matrix
-#' @param yVec an n by 1 numeric vector
+#' @param yVec a n by 1 numeric vector
 #' @return resList a list 
 
 MAIL_Full = function(XMat,yVec) {
