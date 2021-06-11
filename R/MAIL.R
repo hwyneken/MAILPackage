@@ -7,7 +7,7 @@
 #' The advantage of using all of the data is to reduce bias.
 #' There are six total parameters:
 #' \itemize{
-#'   \item splitOption \in \{"Full","Split"\}
+#'   \item splitOption \eqn{\in} \{"Full","Split"\}
 #' }
 
 
