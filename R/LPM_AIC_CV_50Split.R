@@ -1,4 +1,4 @@
-#' Recommended method for estimating \eqn{\sigma^2}
+#' Recommended method for estimating the error variance
 
 LPM_AIC_CV_50Split = function(XMat,yVec) {
   N = dim(XMat)[1]

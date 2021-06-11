@@ -2,10 +2,10 @@
 % Please edit documentation in R/LPM_AIC_CV_50Split.R
 \name{LPM_AIC_CV_50Split}
 \alias{LPM_AIC_CV_50Split}
-\title{Recommended method for estimating \eqn{\sigma^2}}
+\title{Recommended method for estimating the error variance}
 \usage{
 LPM_AIC_CV_50Split(XMat, yVec)
 }
 \description{
-Recommended method for estimating \eqn{\sigma^2}
+Recommended method for estimating the error variance
 }
