@@ -13,10 +13,12 @@ LPM_AIC_CV_50Split(XMat, yVec)
 
 The best way to understand how the function is to break apart the name.
 
-LPM = Largest Plausible Model
-AIC: we choose the largest plausible model by minimizing AIC
-CV: we find the LPM on the training set, and get RMSE from the test set
-50Split: we use a 50/50 split for the training/test set.
+\itemize{
+\item LPM = Largest Plausible Model
+\item AIC: we choose the largest plausible model by minimizing AIC
+\item CV: we find the LPM on the training set, and get RMSE from the test set
+\item 50Split: we use a 50/50 split for the training/test set.
+}
 
 This is very similar to the refitted cross validation method from \insertCite{fan2012variance}{MAIL}}
 }
@@ -24,5 +26,5 @@ This is very similar to the refitted cross validation method from \insertCite{fa
 \code{LPM_AIC_CV_50Split} estimates the error variance with the test set RMSE across 1000 data splits
 }
 \references{
-\insertRef{fan2012variance}
+\insertRef{fan2012variance}{MAIL}
 }
