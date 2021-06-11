@@ -34,9 +34,11 @@ MAIL(
 
 \item{trueSD}{Optional unless "trueValue" has given to the previous argument. This is where the user gives the assumed error standard deviation.}
 
-\item{verbose}{Optional: default is FALSE - set to TRUE if you want to see printed messages about MAIL's progress.}
+\item{verbose}{Optional: default is FALSE - set to TRUE if you want to see printed messages about MAIL's progress.
 
-\item{firstSOILWeightype}{Mandatory - can take values "AIC", "BIC" or "ARM"}
+For specific versions see @seealso \link{\code{MAIL_Full}} and \link{\code{MAIL_Split}}.}
+
+\item{firstSOILWeighType}{Mandatory - can take values "AIC", "BIC" or "ARM"}
 }
 \description{
 \code{MAIL} runs the Model-Averaged Inferential Learning method under different parameter settings

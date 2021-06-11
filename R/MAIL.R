@@ -6,16 +6,18 @@
 #' The advantage of data splitting is to mitigate post selection changes to inference.
 #' The advantage of using all of the data is to reduce bias.
 #' 
-#' @param firstSOILWeightype Mandatory - can take values "AIC", "BIC" or "ARM"
 #' @param XMat a n by p numeric matrix
 #' @param yVec a n by 1 numeric vector
 #' @param splitOption Mandatory - can take the values "Full" or "Split"
+#' @param firstSOILWeighType Mandatory - can take values "AIC", "BIC" or "ARM"
 #' @param smallestModelWeightType Mandatory - can take values "AIC", "BIC" or "ARM"
 #' @param firstSOILPsi Mandatory - can take any value in [0,1]
 #' @param smallestModelPsi Mandatory - can take any value in [0,1]
 #' @param sigma2EstFunc Mandatory - this is a string of the function that will estimate the error variance using only XMat and yVec. We recommend using "LPM_AIC_CV_50Split". If the error variance is known, use "trueValue" here.
 #' @param trueSD Optional unless "trueValue" has given to the previous argument. This is where the user gives the assumed error standard deviation.
 #' @param verbose Optional: default is FALSE - set to TRUE if you want to see printed messages about MAIL's progress.
+#' 
+#' For specific versions see @seealso \link{\code{MAIL_Full}} and \link{\code{MAIL_Split}}.
 
 
 MAIL = function(XMat,yVec,
