@@ -2,10 +2,26 @@
 % Please edit documentation in R/MAIL_Full.R
 \name{MAIL_Full}
 \alias{MAIL_Full}
-\title{type something here}
+\title{MAIL_Full}
 \usage{
 MAIL_Full(XMat, yVec)
 }
+\arguments{
+\item{XMat}{a matrix}
+
+\item{yVec}{a vector}
+}
+\value{
+resList a list
+}
 \description{
-type something here
+\code{MAIL_Full} runs MAIL without data splitting
+}
+\details{
+This is a specific use of the \code{\link{MAIL}} function. 
+The function uses the following arguments with MAIL: 
+\itemize{
+  \item{splitOption}{"Full"}
+  \item{firstSOILWeightType}{"BIC"}
+}
 }
