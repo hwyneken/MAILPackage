@@ -36,7 +36,8 @@ MAIL(
 
 \item{verbose}{Optional: default is FALSE - set to TRUE if you want to see printed messages about MAIL's progress.
 
-For specific versions see @seealso \link{\code{MAIL_Full}} and \link{\code{MAIL_Split}}.}
+For specific versions see @seealso \code{\link{MAIL_Full}} and \code{\link{MAIL_Split}}.
+For the recommended variance estimation method @seealso \code{\link{LPM_AIC_CV_50Split}}}
 
 \item{firstSOILWeighType}{Mandatory - can take values "AIC", "BIC" or "ARM"}
 }

@@ -16,6 +16,8 @@
 #' @param XMat a n by p numeric matrix
 #' @param yVec a n by 1 numeric vector
 #' @return resList a list 
+#' 
+#' @seealso \code{\link{MAIL}} and \code{\link{MAIL_Full}}
 
 MAIL_Split = function(XMat,yVec) {
   resList = MAIL(XMat,yVec,

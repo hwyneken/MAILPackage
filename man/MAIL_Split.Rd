@@ -30,3 +30,6 @@ The function uses the following arguments with MAIL:
   verbose = FALSE
 }
 }
+\seealso{
+\code{\link{MAIL}} and \code{\link{MAIL_Full}}
+}
