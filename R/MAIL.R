@@ -8,7 +8,7 @@
 #' The advantage of using all of the data is to reduce bias.
 #' There are six total parameters:
 #' \itemize{
-#'   \item splitOption \mjdeqn{\in} \{"Full","Split"\}
+#'   \item splitOption \mjdeqn{\in \{"Full","Split"\}}{ASCII representation}
 #' }
 
 
