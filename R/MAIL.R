@@ -197,7 +197,7 @@ MAIL = function(XMat,yVec,
     covMatList[[i]] <- summary(tempM)$cov.unscaled
   }
 
-  #browser()
+  browser()
 
   for (i in 1:numSelected) {
     tempVar = selectedSet[i]
