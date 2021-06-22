@@ -197,7 +197,7 @@ MAIL = function(XMat,yVec,
     covMatList[[i]] <- summary(tempM)$cov.unscaled
   }
 
-  browser()
+  #browser()
 
   for (i in 1:numSelected) {
     tempVar = selectedSet[i]
@@ -211,11 +211,11 @@ MAIL = function(XMat,yVec,
     for (j in 1:numTempInds) {
       tempInd = tempModelInds[j]
 
-      #print(sprintf("numTempInds: %d, j: %d, tempInd: %d",
-      #              numTempInds,j,tempInd))
-      #print(length(tempModelWeight))
-      #print(length(coefList[[tempInd]]))
-      #print(head(names(coefList[[tempInd]])))
+      print(sprintf("tempVar: %d, j: %d, tempInd: %d",
+                    tempVar,j,tempInd))
+      print(length(tempModelWeight))
+      print(length(coefList[[tempInd]]))
+      print(head(rownames(coefList[[tempInd]])))
       tempCoefVec2[j] <- tempModelWeight[j]*coefList[[tempInd]][paste0("V",tempVar),1]
 
       tempWeight2 = ifelse(tempInd == numCand,
