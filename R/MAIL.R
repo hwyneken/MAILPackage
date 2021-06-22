@@ -212,6 +212,8 @@ MAIL = function(XMat,yVec,
 
       print(sprintf("numTempInds: %d, j: %d, tempInd: %d",
                     numTempInds,j,tempInd))
+      print(length(tempModelWeight))
+      print(length(coefList[[tempInd]]))
       tempCoefVec2[j] <- tempModelWeight[j]*coefList[[tempInd]][paste0("V",tempVar),1]
 
       tempWeight2 = ifelse(tempInd == numCand,
