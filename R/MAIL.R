@@ -211,7 +211,7 @@ MAIL = function(XMat,yVec,
     colnames(tempX) = paste("V",which(candMat[i,] != 0),sep="")
     tempDF = data.frame(y=yCon)
     tempDF = cbind(tempDF,tempX)
-    tempM = lm(y~.,data=tempDF)
+    tempM = lm(y~.,data=tempDF,tol=1e-16) # set tolerance to all for very dependent columns
 
     coefList[[i]] <- coef(summary(tempM))
     covMatList[[i]] <- summary(tempM)$cov.unscaled
