@@ -98,6 +98,15 @@ MAIL = function(XMat,yVec,
   if (length(selectedSet) > numModels) {
     selectedSet = selectedSet[order(allSOILScores[selectedSet],decreasing=TRUE)[1:numModels]]
   }
+
+  ## check for dependent columns
+  fullSelectedX <- XMat[,selectedSet]
+  fullSelectedRREM <- pracma::rref(fullSelectedX) ## get the reduced row echelon matrix
+  # the linearly independent columns start with 1's on the diagonal
+  fullSelectedRREM_Diag <- diag(fullSelectedRREM)
+  indsToKeep <- which(fullSelectedRREM_Diag == 1)
+  selectedSet <- selectedSet[indsToKeep]
+
   numSelected = length(selectedSet)
 
   selectedSOILScores = as.numeric(soilRes$importance)[selectedSet]
@@ -143,8 +152,10 @@ MAIL = function(XMat,yVec,
   ### in other words choose min AIC-corrected as the cutoff
 
 
+
+
   if (verbose == TRUE) {
-    print("Step 6: Estimate Final Weights")
+    print("Step 7: Estimate Final Weights")
   }
 
   origSelectedSet = selectedSet
@@ -168,8 +179,10 @@ MAIL = function(XMat,yVec,
     modelWeight = finalSOIL$weight
   }
 
+
+
   if (verbose == TRUE) {
-    print("Step 7: Get MAIL Estimates and CI's")
+    print("Step 8: Get MAIL Estimates and CI's")
   }
 
   numCand = dim(candMat)[1]
