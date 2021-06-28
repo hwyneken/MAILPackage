@@ -100,6 +100,12 @@ MAIL = function(XMat,yVec,
   }
 
   ## check for dependent columns
+  ## start by excluding columns with zero variance in the confirmation set
+  sdInCon <- apply(xCon[,selectedSet],2,sd)
+  whichHaveZeroSD <- which(sdInCon < 1e-16)
+  selectedSet <- setdiff(selectedSet,selectedSet[whichHaveZeroSD]) # remove these
+
+  # now check for dependent columns
   fullSelectedX <- xCon[,selectedSet] # we just need to make sure that we can fit models on the confirmation set
   fullSelectedRREM <- pracma::rref(fullSelectedX) ## get the reduced row echelon matrix
   # the linearly independent columns start with 1's on the diagonal
@@ -111,6 +117,7 @@ MAIL = function(XMat,yVec,
 
   selectedSOILScores = as.numeric(soilRes$importance)[selectedSet]
   selectedSetSorted = selectedSet[order(selectedSOILScores,decreasing=TRUE)]
+
 
 
   ### create the candidate matrix
