@@ -100,7 +100,7 @@ MAIL = function(XMat,yVec,
   }
 
   ## check for dependent columns
-  fullSelectedX <- xExp[,selectedSet]
+  fullSelectedX <- xCon[,selectedSet] # we just need to make sure that we can fit models on the confirmation set
   fullSelectedRREM <- pracma::rref(fullSelectedX) ## get the reduced row echelon matrix
   # the linearly independent columns start with 1's on the diagonal
   fullSelectedRREM_Diag <- diag(fullSelectedRREM)
