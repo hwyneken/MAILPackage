@@ -155,7 +155,7 @@ MAIL = function(XMat,yVec,
 
 
   if (verbose == TRUE) {
-    print("Step 7: Estimate Final Weights")
+    print("Step 6: Estimate Final Weights")
   }
 
   origSelectedSet = selectedSet
@@ -182,7 +182,7 @@ MAIL = function(XMat,yVec,
 
 
   if (verbose == TRUE) {
-    print("Step 8: Get MAIL Estimates and CI's")
+    print("Step 7: Get MAIL Estimates and CI's")
   }
 
   numCand = dim(candMat)[1]
@@ -210,7 +210,6 @@ MAIL = function(XMat,yVec,
     covMatList[[i]] <- summary(tempM)$cov.unscaled
   }
 
-  browser()
 
   for (i in 1:numSelected) {
     tempVar = selectedSet[i]
