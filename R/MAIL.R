@@ -228,7 +228,7 @@ MAIL = function(XMat,yVec,
       print(length(tempModelWeight))
       print(length(coefList[[tempInd]]))
       print(head(rownames(coefList[[tempInd]])))
-      if (any(is.na(coefList[[tempInd]]))) {
+      if (any(is.na(coefList[[tempInd]][,1]))) {
         browser()
       }
       tempCoefVec2[j] <- tempModelWeight[j]*coefList[[tempInd]][paste0("V",tempVar),1]
