@@ -75,12 +75,12 @@ MAIL = function(XMat,yVec,
   }
 
   if (firstSOILWeightType != "ARM") {
-    soilRes = SOIL(x=XMat,y=yVec,
+    soilRes = SOIL(x=xExp,y=yExp,
                    weight_type=firstSOILWeightType,
                    psi=firstSOILPsi,family="gaussian",method="union")
   }
   else {
-    soilRes = SOIL(x=XMat,yVec,
+    soilRes = SOIL(x=xExp,y=yExp,
                    weight_type = "ARM",
                    psi=firstSOILPsi,family="gaussian",method="union",
                    n_train = ceiling(NExp/2)+4)
@@ -100,7 +100,7 @@ MAIL = function(XMat,yVec,
   }
 
   ## check for dependent columns
-  fullSelectedX <- XMat[,selectedSet]
+  fullSelectedX <- xExp[,selectedSet]
   fullSelectedRREM <- pracma::rref(fullSelectedX) ## get the reduced row echelon matrix
   # the linearly independent columns start with 1's on the diagonal
   fullSelectedRREM_Diag <- diag(fullSelectedRREM)
@@ -167,12 +167,12 @@ MAIL = function(XMat,yVec,
   }
   else {
     if (firstSOILWeightType != "ARM") {
-      finalSOIL = SOIL(x=XMat,y=yVec,family="gaussian",weight_type=firstSOILWeightType,
+      finalSOIL = SOIL(x=xCon,y=yCon,family="gaussian",weight_type=firstSOILWeightType,
                        psi=firstSOILPsi,
                        candidate_models = candMat,method="customize")
     }
     else {
-      finalSOIL = SOIL(x=XMat,y=yVec,family="gaussian",weight_type="ARM",
+      finalSOIL = SOIL(x=xCon,y=yCon,family="gaussian",weight_type="ARM",
                        psi=firstSOILPsi,n_train = ceiling(NExp/2)+4,
                        candidate_models = candMat,method="customize")
     }
