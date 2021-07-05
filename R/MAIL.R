@@ -98,6 +98,7 @@ MAIL = function(XMat,yVec,
   if (length(selectedSet) > numModels) {
     selectedSet = selectedSet[order(allSOILScores[selectedSet],decreasing=TRUE)[1:numModels]]
   }
+  origSelectedSet = selectedSet
 
   ## check for dependent columns
   ## start by excluding columns with zero variance in the confirmation set
@@ -165,7 +166,7 @@ MAIL = function(XMat,yVec,
     print("Step 6: Estimate Final Weights")
   }
 
-  origSelectedSet = selectedSet
+
 
   candMat = candMat[minInd:maxInd,]
   if (minInd == maxInd) {
