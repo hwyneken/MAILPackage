@@ -205,7 +205,7 @@ MAIL = function(XMat,yVec,
   covMatList <- list() # list of information matrices for each submodel
   for (i in 1:numCand) {
     tempX <- xCon[,which(candMat[i,] != 0)]
-    if (sum(candMat[i,] != 0) == 1) {
+    if (sum(candMat[i,] != 0,na.rm=TRUE) == 1) {
       tempX <- matrix(tempX,ncol=1)
     }
     colnames(tempX) = paste("V",which(candMat[i,] != 0),sep="")
@@ -222,7 +222,7 @@ MAIL = function(XMat,yVec,
     tempVar = selectedSet[i]
     tempModelInds = which(candMat[,tempVar] != 0)
     smallestModel = min(tempModelInds)
-    tempModelWeight = modelWeight[tempModelInds] / sum(modelWeight[tempModelInds])
+    tempModelWeight = modelWeight[tempModelInds] / sum(modelWeight[tempModelInds],na.rm=TRUE)
     numTempInds = length(tempModelInds)
 
     tempCoefVec2 <- rep(0,times=numTempInds)
@@ -242,14 +242,14 @@ MAIL = function(XMat,yVec,
 
       tempWeight2 = ifelse(tempInd == numCand,
                            tempModelWeight[j]^2,
-                           tempModelWeight[j]^2 + 2*tempModelWeight[j]*sum(tempModelWeight[(j+1):numTempInds]))
+                           tempModelWeight[j]^2 + 2*tempModelWeight[j]*sum(tempModelWeight[(j+1):numTempInds],na.rm=TRUE))
 
       tempCovMat <- covMatList[[tempInd]]
       tempVarVec2[j] <- tempWeight2 * diag(tempCovMat)[paste("V",tempVar,sep="")]
     }
 
-    tempCoefVec[i] <- sum(tempCoefVec2)
-    tempVarVec[i] <- sum(tempVarVec2)
+    tempCoefVec[i] <- sum(tempCoefVec2,na.rm=TRUE)
+    tempVarVec[i] <- sum(tempVarVec2,na.rm=TRUE)
   }
 
   tempVarVec <- tempVarVec *  estSigma2
