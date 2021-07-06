@@ -106,6 +106,17 @@ MAIL = function(XMat,yVec,
   whichHaveZeroSD <- which(sdInCon < 1e-16)
   selectedSet <- setdiff(selectedSet,selectedSet[whichHaveZeroSD]) # remove these
 
+  ## now remove columns that are highly unbalanced
+  mostCommonValueFraction <- function(x) {
+    valCounts <- table(x)
+    mostCommonInd <- which.max(valCounts)
+    mostCommonFraction <- valCounts[mostCommonInd] / sum(valCounts,na.rm=TRUE)
+    return(mostCommonFraction)
+  }
+  mostCommonFractionInCon <- apply(xCon[,selectedSet],2,mostCommonValueFraction)
+  whichAreOver80 <- which(mostCommonFractionInCon >= 0.8)
+  selectedSet <- setdiff(selectedSet,selectedSet[-1*whichAreOver80])
+
   # now check for dependent columns
   fullSelectedX <- xCon[,selectedSet] # we just need to make sure that we can fit models on the confirmation set
   fullSelectedRREM <- pracma::rref(fullSelectedX) ## get the reduced row echelon matrix
