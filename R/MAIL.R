@@ -115,7 +115,7 @@ MAIL = function(XMat,yVec,
   }
   mostCommonFractionInCon <- apply(xCon[,selectedSet],2,mostCommonValueFraction)
   whichAreOver80 <- which(mostCommonFractionInCon >= 0.8)
-  selectedSet <- setdiff(selectedSet,selectedSet[-1*whichAreOver80])
+  selectedSet <- setdiff(selectedSet,selectedSet[whichAreOver80])
 
   # now check for dependent columns
   fullSelectedX <- xCon[,selectedSet] # we just need to make sure that we can fit models on the confirmation set
