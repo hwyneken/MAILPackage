@@ -127,151 +127,203 @@ MAIL = function(XMat,yVec,
 
   numSelected = length(selectedSet)
 
-  selectedSOILScores = as.numeric(soilRes$importance)[selectedSet]
-  selectedSetSorted = selectedSet[order(selectedSOILScores,decreasing=TRUE)]
+  if (numSelected > 0) {
+    selectedSOILScores = as.numeric(soilRes$importance)[selectedSet]
+    selectedSetSorted = selectedSet[order(selectedSOILScores,decreasing=TRUE)]
 
 
+    ### create the candidate matrix
+    if (verbose == TRUE) {
+      print("Step 4: Create Candidate Set, and Smallest Model")
+    }
 
-  ### create the candidate matrix
-  if (verbose == TRUE) {
-    print("Step 4: Create Candidate Set, and Smallest Model")
-  }
+    candMat = matrix(0,nrow=numSelected,ncol=p)
+    tempVarSet = c()
+    for (i in 1:numSelected) {
+      tempVarSet = c(tempVarSet,selectedSetSorted[i])
+      candMat[i,tempVarSet] = 1
+    }
 
-  candMat = matrix(0,nrow=numSelected,ncol=p)
-  tempVarSet = c()
-  for (i in 1:numSelected) {
-    tempVarSet = c(tempVarSet,selectedSetSorted[i])
-    candMat[i,tempVarSet] = 1
-  }
+    reRunSOIL_SmallestModel = SOIL(x=xExp,y=yExp,family="gaussian",weight_type=smallestModelWeightType,
+                                   psi=smallestModelPsi,n_train_bound = numModels + 2,
+                                   n_train = numModels + 4,
+                                   candidate_models = candMat,method="customize")
 
-  reRunSOIL_SmallestModel = SOIL(x=xExp,y=yExp,family="gaussian",weight_type=smallestModelWeightType,
-                                 psi=smallestModelPsi,n_train_bound = numModels + 2,
-                                 n_train = numModels + 4,
-                                 candidate_models = candMat,method="customize")
+    minInd = which.max(reRunSOIL_SmallestModel$weight)
+    maxInd = dim(candMat)[1]
 
-  minInd = which.max(reRunSOIL_SmallestModel$weight)
-  maxInd = dim(candMat)[1]
+    if (verbose == TRUE) {
+      print("Step 5: Estimate sigma^2")
+    }
 
-  if (verbose == TRUE) {
-    print("Step 5: Estimate sigma^2")
-  }
-
-  ##### Variance Estimation
-  if (sigma2EstFunc != "trueValue") {
-    tempSigma2Func = get(sigma2EstFunc)
-    estSigma2 = tempSigma2Func(XMat,yVec)
-  }
-  else {
-    estSigma2 = trueSD^2
-  }
-
-  ### now that we have an estimate of sigma^2,
-  ### we can through out the obviously wrong models that are too large
-  ### choose the number of variables as "largestIndex" -
-  ### in other words choose min AIC-corrected as the cutoff
-
-
-
-
-  if (verbose == TRUE) {
-    print("Step 6: Estimate Final Weights")
-  }
-
-
-
-  candMat = candMat[minInd:maxInd,]
-  if (minInd == maxInd) {
-    candMat = matrix(candMat,nrow=1)
-    modelWeight = 1
-  }
-  else {
-    if (firstSOILWeightType != "ARM") {
-      finalSOIL = SOIL(x=xCon,y=yCon,family="gaussian",weight_type=firstSOILWeightType,
-                       psi=firstSOILPsi,
-                       candidate_models = candMat,method="customize")
+    ##### Variance Estimation
+    if (sigma2EstFunc != "trueValue") {
+      tempSigma2Func = get(sigma2EstFunc)
+      estSigma2 = tempSigma2Func(XMat,yVec)
     }
     else {
-      finalSOIL = SOIL(x=xCon,y=yCon,family="gaussian",weight_type="ARM",
-                       psi=firstSOILPsi,n_train = ceiling(NExp/2)+4,
-                       candidate_models = candMat,method="customize")
+      estSigma2 = trueSD^2
     }
-    modelWeight = finalSOIL$weight
-  }
+
+    ### now that we have an estimate of sigma^2,
+    ### we can through out the obviously wrong models that are too large
+    ### choose the number of variables as "largestIndex" -
+    ### in other words choose min AIC-corrected as the cutoff
 
 
 
-  if (verbose == TRUE) {
-    print("Step 7: Get MAIL Estimates and CI's")
-  }
 
-  numCand = dim(candMat)[1]
-  selectedSet = which(candMat[numCand,] != 0)
-  numModels = numCand
-  numSelected = length(selectedSet)
-
-  tempCoefVec <- rep(0,numSelected)
-  tempVarVec <- rep(0,numSelected)
-
-  ### need to speed this up
-  coefList <- list() # list of coefficients from each submodel
-  covMatList <- list() # list of information matrices for each submodel
-  for (i in 1:numCand) {
-    tempX <- xCon[,which(candMat[i,] != 0)]
-    if (sum(candMat[i,] != 0,na.rm=TRUE) == 1) {
-      tempX <- matrix(tempX,ncol=1)
+    if (verbose == TRUE) {
+      print("Step 6: Estimate Final Weights")
     }
-    colnames(tempX) = paste("V",which(candMat[i,] != 0),sep="")
-    tempDF = data.frame(y=yCon)
-    tempDF = cbind(tempDF,tempX)
-    tempM = lm(y~.,data=tempDF,tol=1e-16) # set tolerance to all for very dependent columns
-
-    coefList[[i]] <- coef(summary(tempM))
-    covMatList[[i]] <- summary(tempM)$cov.unscaled
-  }
 
 
-  for (i in 1:numSelected) {
-    tempVar = selectedSet[i]
-    tempModelInds = which(candMat[,tempVar] != 0)
-    smallestModel = min(tempModelInds)
-    tempModelWeight = modelWeight[tempModelInds] / sum(modelWeight[tempModelInds],na.rm=TRUE)
-    numTempInds = length(tempModelInds)
 
-    tempCoefVec2 <- rep(0,times=numTempInds)
-    tempVarVec2 <- rep(0,times=numTempInds)
-    for (j in 1:numTempInds) {
-      tempInd = tempModelInds[j]
-
-      print(sprintf("tempVar: %d, j: %d, tempInd: %d",
-                    tempVar,j,tempInd))
-      print(length(tempModelWeight))
-      print(length(coefList[[tempInd]]))
-      print(head(rownames(coefList[[tempInd]])))
-      if (!(paste0("V",tempVar) %in% rownames(coefList[[tempInd]]))) {
-        browser()
+    candMat = candMat[minInd:maxInd,]
+    if (minInd == maxInd) {
+      candMat = matrix(candMat,nrow=1)
+      modelWeight = 1
+    }
+    else {
+      if (firstSOILWeightType != "ARM") {
+        finalSOIL = SOIL(x=xCon,y=yCon,family="gaussian",weight_type=firstSOILWeightType,
+                         psi=firstSOILPsi,
+                         candidate_models = candMat,method="customize")
       }
-      tempCoefVec2[j] <- tempModelWeight[j]*coefList[[tempInd]][paste0("V",tempVar),1]
-
-      tempWeight2 = ifelse(tempInd == numCand,
-                           tempModelWeight[j]^2,
-                           tempModelWeight[j]^2 + 2*tempModelWeight[j]*sum(tempModelWeight[(j+1):numTempInds],na.rm=TRUE))
-
-      tempCovMat <- covMatList[[tempInd]]
-      tempVarVec2[j] <- tempWeight2 * diag(tempCovMat)[paste("V",tempVar,sep="")]
+      else {
+        finalSOIL = SOIL(x=xCon,y=yCon,family="gaussian",weight_type="ARM",
+                         psi=firstSOILPsi,n_train = ceiling(NExp/2)+4,
+                         candidate_models = candMat,method="customize")
+      }
+      modelWeight = finalSOIL$weight
     }
 
-    tempCoefVec[i] <- sum(tempCoefVec2,na.rm=TRUE)
-    tempVarVec[i] <- sum(tempVarVec2,na.rm=TRUE)
+
+
+    if (verbose == TRUE) {
+      print("Step 7: Get MAIL Estimates and CI's")
+    }
+
+    numCand = dim(candMat)[1]
+    selectedSet = which(candMat[numCand,] != 0)
+    numModels = numCand
+    numSelected = length(selectedSet)
+
+    tempCoefVec <- rep(0,numSelected)
+    tempVarVec <- rep(0,numSelected)
+
+    ### need to speed this up
+    coefList <- list() # list of coefficients from each submodel
+    covMatList <- list() # list of information matrices for each submodel
+    for (i in 1:numCand) {
+      tempX <- xCon[,which(candMat[i,] != 0)]
+      if (sum(candMat[i,] != 0,na.rm=TRUE) == 1) {
+        tempX <- matrix(tempX,ncol=1)
+      }
+      colnames(tempX) = paste("V",which(candMat[i,] != 0),sep="")
+      tempDF = data.frame(y=yCon)
+      tempDF = cbind(tempDF,tempX)
+      tempM = lm(y~.,data=tempDF,tol=1e-16) # set tolerance to all for very dependent columns
+
+      coefList[[i]] <- coef(summary(tempM))
+      covMatList[[i]] <- summary(tempM)$cov.unscaled
+    }
+
+
+    for (i in 1:numSelected) {
+      tempVar = selectedSet[i]
+      tempModelInds = which(candMat[,tempVar] != 0)
+      smallestModel = min(tempModelInds)
+      tempModelWeight = modelWeight[tempModelInds] / sum(modelWeight[tempModelInds],na.rm=TRUE)
+      numTempInds = length(tempModelInds)
+
+      tempCoefVec2 <- rep(0,times=numTempInds)
+      tempVarVec2 <- rep(0,times=numTempInds)
+      for (j in 1:numTempInds) {
+        tempInd = tempModelInds[j]
+
+        print(sprintf("tempVar: %d, j: %d, tempInd: %d",
+                      tempVar,j,tempInd))
+        print(length(tempModelWeight))
+        print(length(coefList[[tempInd]]))
+        print(head(rownames(coefList[[tempInd]])))
+        if (!(paste0("V",tempVar) %in% rownames(coefList[[tempInd]]))) {
+          browser()
+        }
+        tempCoefVec2[j] <- tempModelWeight[j]*coefList[[tempInd]][paste0("V",tempVar),1]
+
+        tempWeight2 = ifelse(tempInd == numCand,
+                             tempModelWeight[j]^2,
+                             tempModelWeight[j]^2 + 2*tempModelWeight[j]*sum(tempModelWeight[(j+1):numTempInds],na.rm=TRUE))
+
+        tempCovMat <- covMatList[[tempInd]]
+        tempVarVec2[j] <- tempWeight2 * diag(tempCovMat)[paste("V",tempVar,sep="")]
+      }
+
+      tempCoefVec[i] <- sum(tempCoefVec2,na.rm=TRUE)
+      tempVarVec[i] <- sum(tempVarVec2,na.rm=TRUE)
+    }
+
+    tempVarVec <- tempVarVec *  estSigma2
+
+    tempCI <- matrix(0,nrow=numSelected,ncol=2)
+    tempCI[,1] <- tempCoefVec - 1.96*sqrt(tempVarVec)
+    tempCI[,2] <- tempCoefVec + 1.96*sqrt(tempVarVec)
+
+    betaHatMA <- rep(0,times=p)
+    betaHatMA[selectedSet] <- tempCoefVec
+  }
+  else { # no variables were selected
+    selectedSOILScores <- NULL
+    selectedSetSorted <- NULL
+
+
+    ### create the candidate matrix
+    if (verbose == TRUE) {
+      print("Step 4: No Variables Selected, Return Empty Candidate Set")
+    }
+
+    candMat <- NULL
+
+    if (verbose == TRUE) {
+      print("Step 5: Estimate sigma^2")
+    }
+
+    ##### Variance Estimation
+    if (sigma2EstFunc != "trueValue") {
+      tempSigma2Func = get(sigma2EstFunc)
+      estSigma2 = tempSigma2Func(XMat,yVec)
+    }
+    else {
+      estSigma2 = trueSD^2
+    }
+
+    ### now that we have an estimate of sigma^2,
+    ### we can through out the obviously wrong models that are too large
+    ### choose the number of variables as "largestIndex" -
+    ### in other words choose min AIC-corrected as the cutoff
+
+
+
+
+    if (verbose == TRUE) {
+      print("Step 6: No Variables Selected, Do Not Estimate Final Weights")
+    }
+    modelWeight <- NULL
+
+
+
+    if (verbose == TRUE) {
+      print("Step 7: No Variables Selected, Do Not Calculate MAIL Estimates and CI's")
+    }
+
+    tempVarVec <- NULL
+
+    tempCI <- NULL
+    betaHatMA <- rep(0,times=p)
   }
 
-  tempVarVec <- tempVarVec *  estSigma2
 
-  tempCI <- matrix(0,nrow=numSelected,ncol=2)
-  tempCI[,1] <- tempCoefVec - 1.96*sqrt(tempVarVec)
-  tempCI[,2] <- tempCoefVec + 1.96*sqrt(tempVarVec)
-
-  betaHatMA <- rep(0,times=p)
-  betaHatMA[selectedSet] <- tempCoefVec
 
 
   resList <- list(tempCI = tempCI,
