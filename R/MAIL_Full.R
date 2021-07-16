@@ -42,10 +42,11 @@
 #' # install package colonCA through Bioconductor (use these steps)
 #' # https://bioconductor.org/packages/release/data/experiment/html/colonCA.html
 #' require(colonCA)
+#' data(colonCA)
 #' dataSet <- t(colonCA@assayData$exprs)
 #' colon_y <- dataSet[,249]
 #' colon_x <- dataSet[,-1*249]
-#' colon_x <- t(unique(t(colon_x)))
+#' colon_x <- t(unique(t(colon_x))) # remove duplicate columns - original has p = 1999, reduce to p = 1990
 #' colon_y <- scale(colon_y)
 #  colon_x <- scale(colon_x)
 #'
