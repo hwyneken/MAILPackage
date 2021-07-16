@@ -24,6 +24,8 @@ MAIL(
 
 \item{splitOption}{Mandatory - can take the values "Full" or "Split"}
 
+\item{firstSOILWeightType}{Mandatory - can take values "AIC", "BIC" or "ARM"}
+
 \item{smallestModelWeightType}{Mandatory - can take values "AIC", "BIC" or "ARM"}
 
 \item{firstSOILPsi}{Mandatory - can take any value in [0,1]}
@@ -35,14 +37,12 @@ MAIL(
 \item{trueSD}{Optional unless "trueValue" has given to the previous argument. This is where the user gives the assumed error standard deviation.}
 
 \item{verbose}{Optional: default is FALSE - set to TRUE if you want to see printed messages about MAIL's progress.}
-
-\item{firstSOILWeighType}{Mandatory - can take values "AIC", "BIC" or "ARM"}
 }
 \description{
 \code{MAIL} runs the Model-Averaged Inferential Learning method under different parameter settings
 }
 \details{
-The most important choice is whether or not use data splitting. 
+The most important choice is whether or not use data splitting.
 The advantage of data splitting is to mitigate post selection changes to inference.
 The advantage of using all of the data is to reduce bias.
 }
