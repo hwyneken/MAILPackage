@@ -17,7 +17,7 @@ resList a list with the following elements:
   \item selectedSet: The indices of the selected variables (out of {1,...,p}).
   \item tempCI: A matrix (numSelected by 2) - each row corresponds to the 95% confidence interval for the full target of each selected variable (in the same order as selected set).
   \item margVar: A vector (length numSelected) of the sampling variances.
-  \item betaHat: The vector of model-averaged estimates.
+  \item betaHat: The vector (length p) of model-averaged estimates. Unselected variables have an estimated beta of zero.
   \item estSigma2: The estimated residual variance.
   \item candMat: An indicator matrix of candidate models (numModels by p).
   \item origSelectedSet: The variables selected the initial sweep by SOIL.
@@ -61,8 +61,13 @@ colon_y <- dataSet[,249]
 colon_x <- dataSet[,-1*249]
 colon_x <- t(unique(t(colon_x))) # remove duplicate columns - original has p = 1999, reduce to p = 1990
 colon_y <- scale(colon_y)
+colon_x <- scale(colon_x)
 
 colonMAILFull <- MAIL_Full(XMat = colon_x,yVec = colon_y)
+
+
+# compare the confidence intervals for MAIL_Full and MAIL_Split
+# for X257
 }
 \seealso{
 \code{\link{MAIL}} and \code{\link{MAIL_Split}}
