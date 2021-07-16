@@ -26,6 +26,20 @@
 #'   \item origSelectedSet: The variables selected the initial sweep by SOIL.
 #' }
 #'
+#' @examples
+#'
+#'
+#' #### some comment here
+#' require(colonCA)
+#' dataSet = t(colonCA@assayData$exprs)
+#' colon_y = dataSet[,249]
+#' colon_x = dataSet[,-1*249]
+#' colon_x = t(unique(t(colon_x)))
+#' colon_y = scale(colon_y)
+#  colon_x = scale(colon_x)
+
+
+
 #' @seealso \code{\link{MAIL}} and \code{\link{MAIL_Split}}
 
 MAIL_Full = function(XMat,yVec) {
