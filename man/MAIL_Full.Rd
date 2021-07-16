@@ -41,14 +41,27 @@ The function uses the following arguments with MAIL:
 }
 \examples{
 
+two main ideas to explain with an example
+\itemize {
+  \item how to run MAIL_Full
+  \item how to run diagnostics for MAIL_Full - is it a reliable method for the current data
+}
 
-#### some comment here
+
+#### how to run MAIL_Full
+
+# first step - organize the data
+# gene expression problem: response is the expression of gene probe X249.
+# install package colonCA through Bioconductor (use these steps)
+# https://bioconductor.org/packages/release/data/experiment/html/colonCA.html
 require(colonCA)
-dataSet = t(colonCA@assayData$exprs)
-colon_y = dataSet[,249]
-colon_x = dataSet[,-1*249]
-colon_x = t(unique(t(colon_x)))
-colon_y = scale(colon_y)
+dataSet <- t(colonCA@assayData$exprs)
+colon_y <- dataSet[,249]
+colon_x <- dataSet[,-1*249]
+colon_x <- t(unique(t(colon_x)))
+colon_y <- scale(colon_y)
+
+colonMAILFull <- MAIL_Full(XMat = colon_x,yVec = colon_y)
 }
 \seealso{
 \code{\link{MAIL}} and \code{\link{MAIL_Split}}
