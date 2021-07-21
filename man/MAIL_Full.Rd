@@ -13,15 +13,6 @@ MAIL_Full(XMat, yVec)
 }
 \value{
 resList a list with the following elements:
-\itemize{
-  \item selectedSet: The indices of the selected variables (out of {1,...,p}).
-  \item tempCI: A matrix (numSelected by 2) - each row corresponds to the 95% confidence interval for the full target of each selected variable (in the same order as selected set).
-  \item margVar: A vector (length numSelected) of the sampling variances.
-  \item betaHat: The vector (length p) of model-averaged estimates. Unselected variables have an estimated beta of zero.
-  \item estSigma2: The estimated residual variance.
-  \item candMat: An indicator matrix of candidate models (numModels by p).
-  \item origSelectedSet: The variables selected the initial sweep by SOIL.
-}
 }
 \description{
 \code{MAIL_Full} runs MAIL without data splitting
@@ -35,8 +26,8 @@ The function uses the following arguments with MAIL:
   \item smallestModelWeightType = "AIC"
   \item firstSOILPsi = 0.5
   \item smallestModelPsi = 0
-  sigma2EstFunc = "LPM_AIC_CV_50Split"
-  verbose = FALSE
+  \item sigma2EstFunc = "LPM_AIC_CV_50Split"
+  \item verbose = FALSE
 }
 }
 \examples{

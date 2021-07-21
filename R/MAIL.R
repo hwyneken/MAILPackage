@@ -19,6 +19,8 @@
 #'
 #' @seealso \code{\link{MAIL_Full}} and \code{\link{MAIL_Split}} for specific versions
 #' @seealso \code{\link{LPM_AIC_CV_50Split}} for the recommended variance estimation method
+#'
+#' @export
 
 
 MAIL = function(XMat,yVec,
@@ -242,11 +244,11 @@ MAIL = function(XMat,yVec,
       for (j in 1:numTempInds) {
         tempInd = tempModelInds[j]
 
-        print(sprintf("tempVar: %d, j: %d, tempInd: %d",
-                      tempVar,j,tempInd))
-        print(length(tempModelWeight))
-        print(length(coefList[[tempInd]]))
-        print(head(rownames(coefList[[tempInd]])))
+        #print(sprintf("tempVar: %d, j: %d, tempInd: %d",
+        #              tempVar,j,tempInd))
+        #print(length(tempModelWeight))
+        #print(length(coefList[[tempInd]]))
+        #print(head(rownames(coefList[[tempInd]])))
         if (!(paste0("V",tempVar) %in% rownames(coefList[[tempInd]]))) {
           browser()
         }

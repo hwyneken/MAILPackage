@@ -22,6 +22,8 @@
 #'
 #' @references
 #' \insertRef{fan2012variance}{MAIL}
+#'
+#' @export
 
 # help with references here:
 # https://cran.r-project.org/web/packages/Rdpack/vignettes/Inserting_bibtex_references.pdf
