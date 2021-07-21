@@ -2,5 +2,6 @@
 
 export(LPM_AIC_CV_50Split)
 export(MAIL)
+export(MAIL_Full)
 export(MAIL_Split)
 importFrom(Rdpack,reprompt)

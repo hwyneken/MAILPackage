@@ -16,7 +16,8 @@
 #' @param XMat a n by p numeric matrix
 #' @param yVec a n by 1 numeric vector
 #' @return resList a list with the following elements:
-#' @export
+#'
+#'
 #' \itemize{
 #'   \item selectedSet: The indices of the selected variables (out of {1,...,p}).
 #'   \item tempCI: A matrix (numSelected by 2) - each row corresponds to the 95% confidence interval for the full target of each selected variable (in the same order as selected set).
@@ -56,6 +57,9 @@
 #'
 #' # compare the confidence intervals for MAIL_Full and MAIL_Split
 #' # for X257
+#'
+#'
+#' @export
 
 
 
