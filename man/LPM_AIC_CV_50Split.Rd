@@ -4,12 +4,14 @@
 \alias{LPM_AIC_CV_50Split}
 \title{Recommended method for estimating the error variance}
 \usage{
-LPM_AIC_CV_50Split(XMat, yVec)
+LPM_AIC_CV_50Split(XMat, yVec, numCV = 1000)
 }
 \arguments{
 \item{XMat}{a n by p numeric matrix}
 
-\item{yVec}{a n by 1 numeric vector
+\item{yVec}{a n by 1 numeric vector}
+
+\item{numCV}{number of cross validation splits (default is 1000)
 
 The best way to understand how the function is to break apart the name.
 
