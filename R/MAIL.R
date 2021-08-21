@@ -286,6 +286,7 @@ MAIL = function(XMat,yVec,
     }
 
     candMat <- NULL
+    reRunSOIL_SmallestModel <- NULL
 
     if (verbose == TRUE) {
       print("Step 5: Estimate sigma^2")
@@ -335,7 +336,8 @@ MAIL = function(XMat,yVec,
                   modelWeight = modelWeight,
                   estSigma2 = estSigma2,
                   candMat = candMat,
-                  origSelectedSet = origSelectedSet)
+                  origSelectedSet = origSelectedSet,
+                  reRunSOIL_SmallestModel = reRunSOIL_SmallestModel)
 
   return(resList)
 
