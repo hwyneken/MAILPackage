@@ -279,6 +279,7 @@ MAIL = function(XMat,yVec,
   else { # no variables were selected
     selectedSOILScores <- NULL
     selectedSetSorted <- NULL
+    soilRes <- NULL
 
 
     ### create the candidate matrix
@@ -340,7 +341,8 @@ MAIL = function(XMat,yVec,
                   candMat = candMat,
                   origSelectedSet = origSelectedSet,
                   reRunSOIL_SmallestModel = reRunSOIL_SmallestModel,
-                  origCandMat = origCandMat)
+                  origCandMat = origCandMat,
+                  origSOILRes = soilRes)
 
   return(resList)
 
