@@ -146,6 +146,7 @@ MAIL = function(XMat,yVec,
       candMat[i,tempVarSet] = 1
     }
 
+    origCandMat <- candMat
     reRunSOIL_SmallestModel = SOIL(x=xExp,y=yExp,family="gaussian",weight_type=smallestModelWeightType,
                                    psi=smallestModelPsi,n_train_bound = numModels + 2,
                                    n_train = numModels + 4,
@@ -286,6 +287,7 @@ MAIL = function(XMat,yVec,
     }
 
     candMat <- NULL
+    origCandMat <- NULL
     reRunSOIL_SmallestModel <- NULL
 
     if (verbose == TRUE) {
@@ -337,7 +339,8 @@ MAIL = function(XMat,yVec,
                   estSigma2 = estSigma2,
                   candMat = candMat,
                   origSelectedSet = origSelectedSet,
-                  reRunSOIL_SmallestModel = reRunSOIL_SmallestModel)
+                  reRunSOIL_SmallestModel = reRunSOIL_SmallestModel,
+                  origCandMat = origCandMat)
 
   return(resList)
 
