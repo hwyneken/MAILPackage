@@ -12,6 +12,7 @@ MAIL(
   smallestModelWeightType,
   firstSOILPsi,
   smallestModelPsi,
+  numSelectionIter,
   sigma2EstFunc,
   trueSD = NULL,
   verbose = FALSE
@@ -31,6 +32,8 @@ MAIL(
 \item{firstSOILPsi}{Mandatory - can take any value in [0,1]}
 
 \item{smallestModelPsi}{Mandatory - can take any value in [0,1]}
+
+\item{numSelectionIter}{Optional - defaults to 10, must be an integer >= 1}
 
 \item{sigma2EstFunc}{Mandatory - this is a string of the function that will estimate the error variance using only XMat and yVec. We recommend using "LPM_AIC_CV_50Split". If the error variance is known, use "trueValue" here.}
 

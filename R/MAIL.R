@@ -13,6 +13,7 @@
 #' @param smallestModelWeightType Mandatory - can take values "AIC", "BIC" or "ARM"
 #' @param firstSOILPsi Mandatory - can take any value in [0,1]
 #' @param smallestModelPsi Mandatory - can take any value in [0,1]
+#' @param numSelectionIter Optional - defaults to 10, must be an integer >= 1
 #' @param sigma2EstFunc Mandatory - this is a string of the function that will estimate the error variance using only XMat and yVec. We recommend using "LPM_AIC_CV_50Split". If the error variance is known, use "trueValue" here.
 #' @param trueSD Optional unless "trueValue" has given to the previous argument. This is where the user gives the assumed error standard deviation.
 #' @param verbose Optional: default is FALSE - set to TRUE if you want to see printed messages about MAIL's progress.
@@ -29,6 +30,7 @@ MAIL = function(XMat,yVec,
                 smallestModelWeightType,
                 firstSOILPsi,
                 smallestModelPsi,
+                numSelectionIter,
                 sigma2EstFunc,
                 trueSD=NULL,
                 verbose=FALSE) {
@@ -76,26 +78,37 @@ MAIL = function(XMat,yVec,
     print("Step 2: Run First Model Average")
   }
 
-  if (firstSOILWeightType != "ARM") {
-    soilRes = SOIL(x=xExp,y=yExp,
-                   weight_type=firstSOILWeightType,
-                   psi=firstSOILPsi,family="gaussian",method="union")
+  allSOILScores = rep(0,times=p) ##
+  for (i in 1:numSelectionIter) {
+    if (verbose == TRUE) {
+      print(sprintf("\tStep 2: Iteration %d",i))
+    }
+
+    if (firstSOILWeightType != "ARM") {
+      soilRes = SOIL(x=xExp,y=yExp,
+                     weight_type=firstSOILWeightType,
+                     psi=firstSOILPsi,family="gaussian",method="union")
+    }
+    else {
+      soilRes = SOIL(x=xExp,y=yExp,
+                     weight_type = "ARM",
+                     psi=firstSOILPsi,family="gaussian",method="union",
+                     n_train = ceiling(NExp/2)+4)
+    }
+    allSOILScores = allSOILScores + as.numeric(soilRes$importance)
   }
-  else {
-    soilRes = SOIL(x=xExp,y=yExp,
-                   weight_type = "ARM",
-                   psi=firstSOILPsi,family="gaussian",method="union",
-                   n_train = ceiling(NExp/2)+4)
-  }
+  allSOILScores = allSOILScores / numSelectionIter
+
+
 
   if (verbose == TRUE) {
     print("Step 3: Select Variables for the Nested Candidate Set")
   }
 
-  allSOILScores = as.numeric(soilRes$importance)
+  #allSOILScores = as.numeric(soilRes$importance)
   numModels = min(c(floor(dim(xExp)[1]/2),floor(dim(xExp)[2]/2)))
   soilCutoff = sort(allSOILScores,decreasing=TRUE)[numModels]
-  selectedSet = which(as.numeric(soilRes$importance) >= soilCutoff)
+  selectedSet = which(allSOILScores >= soilCutoff)
 
   if (length(selectedSet) > numModels) {
     selectedSet = selectedSet[order(allSOILScores[selectedSet],decreasing=TRUE)[1:numModels]]
@@ -130,7 +143,7 @@ MAIL = function(XMat,yVec,
   numSelected = length(selectedSet)
 
   if (numSelected > 0) {
-    selectedSOILScores = as.numeric(soilRes$importance)[selectedSet]
+    selectedSOILScores = allSOILScores[selectedSet]
     selectedSetSorted = selectedSet[order(selectedSOILScores,decreasing=TRUE)]
 
 

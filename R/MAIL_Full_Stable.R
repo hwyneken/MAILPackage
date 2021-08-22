@@ -1,6 +1,6 @@
-#' MAIL_Full
+#' MAIL_Full_Stable
 #'
-#' \code{MAIL_Full} runs MAIL without data splitting
+#' \code{MAIL_Full_Stable} runs MAIL without data splitting, and uses a more stable variable selection method
 #'
 #' This is a specific use of the \code{\link{MAIL}} function.
 #' The function uses the following arguments with MAIL:
@@ -10,7 +10,7 @@
 #'   \item smallestModelWeightType = "AIC"
 #'   \item firstSOILPsi = 0.5
 #'   \item smallestModelPsi = 0
-#'   \item numSelectionIter = 1
+#'   \item numSelectionIter = 30
 #'   \item sigma2EstFunc = "LPM_AIC_CV_50Split"
 #'   \item verbose = FALSE
 #' }
@@ -53,7 +53,7 @@
 #' colon_y <- scale(colon_y)
 #' colon_x <- scale(colon_x)
 #'
-#' colonMAILFull <- MAIL_Full(XMat = colon_x,yVec = colon_y)
+#' colonMAILFull <- MAIL_Full_Stable(XMat = colon_x,yVec = colon_y)
 #'
 #'
 #' # compare the confidence intervals for MAIL_Full and MAIL_Split
@@ -67,15 +67,15 @@
 #' @seealso \code{\link{MAIL}} and \code{\link{MAIL_Split}}
 
 MAIL_Full = function(XMat,yVec) {
-
-
+  
+  
   resList = MAIL(XMat,yVec,
                  splitOption="Full",
                  firstSOILWeightType = "BIC",
                  smallestModelWeightType = "AIC",
                  firstSOILPsi = 0.5,
                  smallestModelPsi = 0,
-                 numSelectionIter = 1,
+                 numSelectionIter = 30,
                  sigma2EstFunc = "LPM_AIC_CV_50Split",
                  trueSD = NULL,
                  verbose=FALSE)
@@ -83,6 +83,6 @@ MAIL_Full = function(XMat,yVec) {
   rownames(resList$tempCI) <- colnames(XMat)[resList$selectedSet]
   colnames(resList$tempCI) <- c("95% CI: Lower Bound",
                                 "95% CI: Upper Bound")
-
+  
   return(resList)
 }
