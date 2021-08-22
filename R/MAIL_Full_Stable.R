@@ -66,9 +66,9 @@
 
 #' @seealso \code{\link{MAIL}} and \code{\link{MAIL_Split}}
 
-MAIL_Full = function(XMat,yVec) {
-  
-  
+MAIL_Full_Stable = function(XMat,yVec) {
+
+
   resList = MAIL(XMat,yVec,
                  splitOption="Full",
                  firstSOILWeightType = "BIC",
@@ -83,6 +83,6 @@ MAIL_Full = function(XMat,yVec) {
   rownames(resList$tempCI) <- colnames(XMat)[resList$selectedSet]
   colnames(resList$tempCI) <- c("95% CI: Lower Bound",
                                 "95% CI: Upper Bound")
-  
+
   return(resList)
 }
