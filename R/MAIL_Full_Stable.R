@@ -10,7 +10,7 @@
 #'   \item smallestModelWeightType = "AIC"
 #'   \item firstSOILPsi = 0.5
 #'   \item smallestModelPsi = 0
-#'   \item numSelectionIter = 30
+#'   \item numSelectionIter = 100
 #'   \item sigma2EstFunc = "LPM_AIC_CV_50Split"
 #'   \item verbose = FALSE
 #' }
@@ -75,7 +75,7 @@ MAIL_Full_Stable = function(XMat,yVec) {
                  smallestModelWeightType = "AIC",
                  firstSOILPsi = 0.5,
                  smallestModelPsi = 0,
-                 numSelectionIter = 30,
+                 numSelectionIter = 100,
                  sigma2EstFunc = "LPM_AIC_CV_50Split",
                  trueSD = NULL,
                  verbose=FALSE)
