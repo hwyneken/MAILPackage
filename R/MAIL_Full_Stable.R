@@ -11,7 +11,7 @@
 #'   \item firstSOILPsi = 0.5
 #'   \item smallestModelPsi = 0
 #'   \item numSelectionIter = 100
-#'   \item sigma2EstFunc = "LPM_AIC_CV_50Split"
+#'   \item sigma2EstFunc = "Nested_LPM_AIC_CV_50Split"
 #'   \item verbose = FALSE
 #' }
 #' @param XMat a n by p numeric matrix

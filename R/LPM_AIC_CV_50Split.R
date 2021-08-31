@@ -9,7 +9,7 @@
 #' The best way to understand how the function is to break apart the name.
 #'
 #' \itemize{
-#' \item LPM = Largest Plausible Model
+#' \item LPM: Largest Plausible Model
 #' \item AIC: we choose the largest plausible model by minimizing AIC
 #' \item CV: we find the LPM on the training set, and get RMSE from the test set
 #' \item 50Split: we use a 50/50 split for the training/test set.
