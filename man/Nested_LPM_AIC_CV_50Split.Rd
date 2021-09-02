@@ -18,7 +18,7 @@ Nested_LPM_AIC_CV_50Split(XMat, yVec, numSim_Outer = 20, numCV_Inner = 30)
 The best way to understand how the function is to break apart the name.
 
 \itemize{
-\item Nested: 
+\item Nested:
 \item LPM: Largest Plausible Model
 \item AIC: we choose the largest plausible model by minimizing AIC
 \item CV: we find the LPM on the training set, and get RMSE from the test set
