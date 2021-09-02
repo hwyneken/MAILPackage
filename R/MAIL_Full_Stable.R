@@ -76,7 +76,7 @@ MAIL_Full_Stable = function(XMat,yVec) {
                  firstSOILPsi = 0.5,
                  smallestModelPsi = 0,
                  numSelectionIter = 100,
-                 sigma2EstFunc = "LPM_AIC_CV_50Split",
+                 sigma2EstFunc = "Nested_LPM_AIC_CV_50Split",
                  trueSD = NULL,
                  verbose=FALSE)
   ##
