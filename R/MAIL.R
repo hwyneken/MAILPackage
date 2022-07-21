@@ -182,7 +182,7 @@ MAIL = function(XMat,yVec,
     }
 
     ### now that we have an estimate of sigma^2,
-    ### we can through out the obviously wrong models that are too large
+    ### we can throw out the obviously wrong models that are too large
     ### choose the number of variables as "largestIndex" -
     ### in other words choose min AIC-corrected as the cutoff
 
@@ -202,12 +202,12 @@ MAIL = function(XMat,yVec,
     }
     else {
       if (firstSOILWeightType != "ARM") {
-        finalSOIL = SOIL(x=xCon,y=yCon,family="gaussian",weight_type=firstSOILWeightType,
+        finalSOIL = SOIL(x=xExp,y=yExp,family="gaussian",weight_type=firstSOILWeightType,
                          psi=firstSOILPsi,
                          candidate_models = candMat,method="customize")
       }
       else {
-        finalSOIL = SOIL(x=xCon,y=yCon,family="gaussian",weight_type="ARM",
+        finalSOIL = SOIL(x=xExp,y=yExp,family="gaussian",weight_type="ARM",
                          psi=firstSOILPsi,n_train = ceiling(NExp/2)+4,
                          candidate_models = candMat,method="customize")
       }
