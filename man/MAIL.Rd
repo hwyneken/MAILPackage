@@ -12,7 +12,7 @@ MAIL(
   smallestModelWeightType,
   firstSOILPsi,
   smallestModelPsi,
-  numSelectionIter,
+  numSelectionIter = 10,
   sigma2EstFunc,
   trueSD = NULL,
   verbose = FALSE

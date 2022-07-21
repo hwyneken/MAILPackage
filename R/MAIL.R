@@ -30,7 +30,7 @@ MAIL = function(XMat,yVec,
                 smallestModelWeightType,
                 firstSOILPsi,
                 smallestModelPsi,
-                numSelectionIter,
+                numSelectionIter=10,
                 sigma2EstFunc,
                 trueSD=NULL,
                 verbose=FALSE) {
@@ -258,11 +258,6 @@ MAIL = function(XMat,yVec,
       for (j in 1:numTempInds) {
         tempInd = tempModelInds[j]
 
-        #print(sprintf("tempVar: %d, j: %d, tempInd: %d",
-        #              tempVar,j,tempInd))
-        #print(length(tempModelWeight))
-        #print(length(coefList[[tempInd]]))
-        #print(head(rownames(coefList[[tempInd]])))
         if (!(paste0("V",tempVar) %in% rownames(coefList[[tempInd]]))) {
           browser()
         }
