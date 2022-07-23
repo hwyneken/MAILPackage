@@ -54,6 +54,7 @@ MAIL_Split = function(XMat,yVec) {
                  smallestModelWeightType = "AIC",
                  firstSOILPsi = 0.5,
                  smallestModelPsi = 0,
+                 numSelectionIter = 1,
                  sigma2EstFunc = "LPM_AIC_CV_50Split",
                  trueSD = NULL,
                  verbose=FALSE)
