@@ -70,5 +70,5 @@ mailStep7 <- function(candMat,selectedSet,xCon,yCon,modelWeight,estSigma2) {
 
   resList = list(betaHatMA = betaHatMA,
                  tempCI = tempCI,
-                 tempVarVec = tempVarVec)
+                 margVar = tempVarVec)
 }
