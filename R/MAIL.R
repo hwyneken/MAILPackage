@@ -116,31 +116,6 @@ MAIL = function(XMat,yVec,
   origSelectedSet = selectedSet
   selectedSet = removeUnidentCols(selectedSet,xCon)
 
-  # ## check for dependent columns
-  # ## start by excluding columns with zero variance in the confirmation set
-  # sdInCon <- apply(xCon[,selectedSet],2,sd)
-  # whichHaveZeroSD <- which(sdInCon < 1e-16)
-  # selectedSet <- setdiff(selectedSet,selectedSet[whichHaveZeroSD]) # remove these
-  #
-  # ## now remove columns that are highly unbalanced
-  # mostCommonValueFraction <- function(x) {
-  #   valCounts <- table(x)
-  #   mostCommonInd <- which.max(valCounts)
-  #   mostCommonFraction <- valCounts[mostCommonInd] / sum(valCounts,na.rm=TRUE)
-  #   return(mostCommonFraction)
-  # }
-  # mostCommonFractionInCon <- apply(xCon[,selectedSet],2,mostCommonValueFraction)
-  # whichAreOver80 <- which(mostCommonFractionInCon >= 0.8)
-  # selectedSet <- setdiff(selectedSet,selectedSet[whichAreOver80])
-  #
-  # # now check for dependent columns
-  # fullSelectedX <- xCon[,selectedSet] # we just need to make sure that we can fit models on the confirmation set
-  # fullSelectedRREM <- pracma::rref(fullSelectedX) ## get the reduced row echelon matrix
-  # # the linearly independent columns start with 1's on the diagonal
-  # fullSelectedRREM_Diag <- diag(fullSelectedRREM)
-  # indsToKeep <- which(fullSelectedRREM_Diag == 1)
-  # selectedSet <- selectedSet[indsToKeep]
-
   numSelected = length(selectedSet)
 
   if (numSelected > 0) {
@@ -220,70 +195,70 @@ MAIL = function(XMat,yVec,
     if (verbose == TRUE) {
       print("Step 7: Get MAIL Estimates and CI's")
     }
-
-    numCand = dim(candMat)[1]
-    selectedSet = which(candMat[numCand,] != 0)
-    numModels = numCand
-    numSelected = length(selectedSet)
-
-    tempCoefVec <- rep(0,numSelected)
-    tempVarVec <- rep(0,numSelected)
-
-    ### need to speed this up
-    coefList <- list() # list of coefficients from each submodel
-    covMatList <- list() # list of information matrices for each submodel
-    for (i in 1:numCand) {
-      tempX <- xCon[,which(candMat[i,] != 0)]
-      if (sum(candMat[i,] != 0,na.rm=TRUE) == 1) {
-        tempX <- matrix(tempX,ncol=1)
-      }
-      colnames(tempX) = paste("V",which(candMat[i,] != 0),sep="")
-      tempDF = data.frame(y=yCon)
-      tempDF = cbind(tempDF,tempX)
-      tempM = lm(y~.,data=tempDF,tol=1e-16) # set tolerance to all for very dependent columns
-
-      coefList[[i]] <- coef(summary(tempM))
-      covMatList[[i]] <- summary(tempM)$cov.unscaled
-    }
-
-
-    for (i in 1:numSelected) {
-      tempVar = selectedSet[i]
-      tempModelInds = which(candMat[,tempVar] != 0)
-      smallestModel = min(tempModelInds)
-      tempModelWeight = modelWeight[tempModelInds] / sum(modelWeight[tempModelInds],na.rm=TRUE)
-      numTempInds = length(tempModelInds)
-
-      tempCoefVec2 <- rep(0,times=numTempInds)
-      tempVarVec2 <- rep(0,times=numTempInds)
-      for (j in 1:numTempInds) {
-        tempInd = tempModelInds[j]
-
-        if (!(paste0("V",tempVar) %in% rownames(coefList[[tempInd]]))) {
-          browser()
-        }
-        tempCoefVec2[j] <- tempModelWeight[j]*coefList[[tempInd]][paste0("V",tempVar),1]
-
-        tempWeight2 = ifelse(tempInd == numCand,
-                             tempModelWeight[j]^2,
-                             tempModelWeight[j]^2 + 2*tempModelWeight[j]*sum(tempModelWeight[(j+1):numTempInds],na.rm=TRUE))
-
-        tempCovMat <- covMatList[[tempInd]]
-        tempVarVec2[j] <- tempWeight2 * diag(tempCovMat)[paste("V",tempVar,sep="")]
-      }
-
-      tempCoefVec[i] <- sum(tempCoefVec2,na.rm=TRUE)
-      tempVarVec[i] <- sum(tempVarVec2,na.rm=TRUE)
-    }
-
-    tempVarVec <- tempVarVec *  estSigma2
-
-    tempCI <- matrix(0,nrow=numSelected,ncol=2)
-    tempCI[,1] <- tempCoefVec - 1.96*sqrt(tempVarVec)
-    tempCI[,2] <- tempCoefVec + 1.96*sqrt(tempVarVec)
-
-    betaHatMA <- rep(0,times=p)
-    betaHatMA[selectedSet] <- tempCoefVec
+    mailOutputs = mailStep7(candMat,selectedSet,xCon,yCon,modelWeight)
+    # numCand = dim(candMat)[1]
+    # selectedSet = which(candMat[numCand,] != 0)
+    # numModels = numCand
+    # numSelected = length(selectedSet)
+    #
+    # tempCoefVec <- rep(0,numSelected)
+    # tempVarVec <- rep(0,numSelected)
+    #
+    # ### need to speed this up
+    # coefList <- list() # list of coefficients from each submodel
+    # covMatList <- list() # list of information matrices for each submodel
+    # for (i in 1:numCand) {
+    #   tempX <- xCon[,which(candMat[i,] != 0)]
+    #   if (sum(candMat[i,] != 0,na.rm=TRUE) == 1) {
+    #     tempX <- matrix(tempX,ncol=1)
+    #   }
+    #   colnames(tempX) = paste("V",which(candMat[i,] != 0),sep="")
+    #   tempDF = data.frame(y=yCon)
+    #   tempDF = cbind(tempDF,tempX)
+    #   tempM = lm(y~.,data=tempDF,tol=1e-16) # set tolerance to all for very dependent columns
+    #
+    #   coefList[[i]] <- coef(summary(tempM))
+    #   covMatList[[i]] <- summary(tempM)$cov.unscaled
+    # }
+    #
+    #
+    # for (i in 1:numSelected) {
+    #   tempVar = selectedSet[i]
+    #   tempModelInds = which(candMat[,tempVar] != 0)
+    #   smallestModel = min(tempModelInds)
+    #   tempModelWeight = modelWeight[tempModelInds] / sum(modelWeight[tempModelInds],na.rm=TRUE)
+    #   numTempInds = length(tempModelInds)
+    #
+    #   tempCoefVec2 <- rep(0,times=numTempInds)
+    #   tempVarVec2 <- rep(0,times=numTempInds)
+    #   for (j in 1:numTempInds) {
+    #     tempInd = tempModelInds[j]
+    #
+    #     if (!(paste0("V",tempVar) %in% rownames(coefList[[tempInd]]))) {
+    #       browser()
+    #     }
+    #     tempCoefVec2[j] <- tempModelWeight[j]*coefList[[tempInd]][paste0("V",tempVar),1]
+    #
+    #     tempWeight2 = ifelse(tempInd == numCand,
+    #                          tempModelWeight[j]^2,
+    #                          tempModelWeight[j]^2 + 2*tempModelWeight[j]*sum(tempModelWeight[(j+1):numTempInds],na.rm=TRUE))
+    #
+    #     tempCovMat <- covMatList[[tempInd]]
+    #     tempVarVec2[j] <- tempWeight2 * diag(tempCovMat)[paste("V",tempVar,sep="")]
+    #   }
+    #
+    #   tempCoefVec[i] <- sum(tempCoefVec2,na.rm=TRUE)
+    #   tempVarVec[i] <- sum(tempVarVec2,na.rm=TRUE)
+    # }
+    #
+    # tempVarVec <- tempVarVec *  estSigma2
+    #
+    # tempCI <- matrix(0,nrow=numSelected,ncol=2)
+    # tempCI[,1] <- tempCoefVec - 1.96*sqrt(tempVarVec)
+    # tempCI[,2] <- tempCoefVec + 1.96*sqrt(tempVarVec)
+    #
+    # betaHatMA <- rep(0,times=p)
+    # betaHatMA[selectedSet] <- tempCoefVec
   }
   else { # no variables were selected
     selectedSOILScores <- NULL
@@ -341,10 +316,10 @@ MAIL = function(XMat,yVec,
 
 
 
-  resList <- list(tempCI = tempCI,
+  resList <- list(tempCI = mailOutputs$tempCI,
                   selectedSet = selectedSet,
-                  margVar = tempVarVec,
-                  betaHat = betaHatMA,
+                  margVar = mailOutputs$margVar,
+                  betaHat = mailOutputs$betaHatMA,
                   modelWeight = modelWeight,
                   estSigma2 = estSigma2,
                   candMat = candMat,
