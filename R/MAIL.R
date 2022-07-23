@@ -195,7 +195,7 @@ MAIL = function(XMat,yVec,
     if (verbose == TRUE) {
       print("Step 7: Get MAIL Estimates and CI's")
     }
-    mailOutputs = mailStep7(candMat,selectedSet,xCon,yCon,modelWeight)
+    mailOutputs = mailStep7(candMat,selectedSet,xCon,yCon,modelWeight,estSigma2)
     # numCand = dim(candMat)[1]
     # selectedSet = which(candMat[numCand,] != 0)
     # numModels = numCand
