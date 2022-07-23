@@ -3,6 +3,7 @@
 #' @export
 
 mailStep7 <- function(candMat,selectedSet,xCon,yCon,modelWeight,estSigma2) {
+  p = dim(xCon)[2]
   numCand = dim(candMat)[1]
   selectedSet = which(candMat[numCand,] != 0)
   numModels = numCand
