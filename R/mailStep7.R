@@ -12,7 +12,6 @@ mailStep7 <- function(candMat,selectedSet,xCon,yCon,modelWeight,estSigma2) {
   tempCoefVec <- rep(0,numSelected)
   tempVarVec <- rep(0,numSelected)
 
-  ### need to speed this up
   coefList <- list() # list of coefficients from each submodel
   covMatList <- list() # list of information matrices for each submodel
   for (i in 1:numCand) {

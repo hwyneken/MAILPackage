@@ -100,12 +100,10 @@ MAIL = function(XMat,yVec,
   allSOILScores = allSOILScores / numSelectionIter
 
 
-
   if (verbose == TRUE) {
     print("Step 3: Select Variables for the Nested Candidate Set")
   }
 
-  #allSOILScores = as.numeric(soilRes$importance)
   numModels = min(c(floor(dim(xExp)[1]/2),floor(dim(xExp)[2]/2)))
   soilCutoff = sort(allSOILScores,decreasing=TRUE)[numModels]
   selectedSet = which(allSOILScores >= soilCutoff)
@@ -162,13 +160,9 @@ MAIL = function(XMat,yVec,
     ### choose the number of variables as "largestIndex" -
     ### in other words choose min AIC-corrected as the cutoff
 
-
-
-
     if (verbose == TRUE) {
       print("Step 6: Estimate Final Weights")
     }
-
 
 
     candMat = candMat[minInd:maxInd,]
@@ -203,7 +197,6 @@ MAIL = function(XMat,yVec,
     selectedSetSorted <- NULL
     soilRes <- NULL
 
-
     ### create the candidate matrix
     if (verbose == TRUE) {
       print("Step 4: No Variables Selected, Return Empty Candidate Set")
@@ -226,27 +219,16 @@ MAIL = function(XMat,yVec,
       estSigma2 = trueSD^2
     }
 
-    ### now that we have an estimate of sigma^2,
-    ### we can through out the obviously wrong models that are too large
-    ### choose the number of variables as "largestIndex" -
-    ### in other words choose min AIC-corrected as the cutoff
-
-
-
-
     if (verbose == TRUE) {
       print("Step 6: No Variables Selected, Do Not Estimate Final Weights")
     }
     modelWeight <- NULL
-
-
 
     if (verbose == TRUE) {
       print("Step 7: No Variables Selected, Do Not Calculate MAIL Estimates and CI's")
     }
 
     tempVarVec <- NULL
-
     tempCI <- NULL
     betaHatMA <- rep(0,times=p)
   }
